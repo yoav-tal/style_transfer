@@ -265,7 +265,7 @@ class StyleTransfer(object):
                 if index >= 5 and index < 20:
                     skip_step = 10
                 elif index >= 20:
-                    skip_step = 20
+                    skip_step = 50
 
                 print("running opt")
                 sess.run(self.opt)
@@ -290,7 +290,7 @@ class StyleTransfer(object):
 
 
 
-                    if (index + 1) % 20 == 0 or (index+1) % n_iters == 0:
+                    if (index + 1) % 100 == 0 or (index+1) % n_iters == 0:
                         ###############################
                         ## TO DO: save the variables into a checkpoint
                         print("Saving...")
