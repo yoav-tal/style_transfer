@@ -13,7 +13,7 @@ import os
 #os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 checkpoint_path = os.environ['OUTPUT'] + '/checkpoints'
-results_path = os.environ['OUTPUT'] + '/results'
+outputs_path = os.environ['OUTPUT'] + '/outputs'
 
 import time
 
@@ -29,7 +29,7 @@ def setup():
 #    utils.safe_mkdir('outputs')
 
     utils.safe_mkdir(checkpoint_path)
-    utils.safe_mkdir(results_path)
+    utils.safe_mkdir(outputs_path)
 
     try:
         pass#os.remove('checkpoints/checkpoint')
@@ -296,7 +296,7 @@ class StyleTransfer(object):
                         print("Saving...")
 
                         #filename = 'outputs/%d.png' % (index)
-                        filename = results_path + '%d.png' % (index)
+                        filename = outputs_path + '/%d.png' % (index)
                         utils.save_image(filename, gen_image)
                         #saver.save(sess=sess, save_path='checkpoints/style_transfer',global_step=self.gstep)
                         saver.save(sess=sess, save_path= checkpoint_path + '/style_transfer',global_step=self.gstep)
@@ -310,4 +310,4 @@ if __name__ == '__main__':
     #machine = StyleTransfer('content/punch.jpg', 'styles/kadishman.jpeg', 160,120)#333, 250)
     machine = StyleTransfer('/input/yoav_ST/content/punch.jpg', '/input/yoav_ST/styles/kadishman.jpeg', 160,120)#333, 250)
     machine.build()
-    machine.train(10)
+    machine.train(2)
