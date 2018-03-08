@@ -308,6 +308,6 @@ class StyleTransfer(object):
 if __name__ == '__main__':
     setup()
     #machine = StyleTransfer('content/punch.jpg', 'styles/kadishman.jpeg', 160,120)#333, 250)
-    machine = StyleTransfer('/input/yoav_ST/content/punch.jpg', '/input/yoav_ST/styles/kadishman.jpeg', 200,150)#333, 250)
+    machine = StyleTransfer('/input/yoav_ST/content/punch.jpg', '/input/yoav_ST/styles/kadishman.jpeg', 160,120)#333, 250)
     machine.build()
     machine.train(1000)
