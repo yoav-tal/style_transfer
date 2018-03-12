@@ -22,7 +22,7 @@ import utils
 # VGG-19 parameters file
 VGG_DOWNLOAD_LINK = 'http://www.vlfeat.org/matconvnet/models/imagenet-vgg-verydeep-19.mat'
 if local_flag: VGG_FILENAME = 'imagenet-vgg-verydeep-19.mat'
-if skyscanner: VGG_FILENAME = '/input/yoav_ST/imagenet-vgg-verydeep-19.mat'
+if skywalker: VGG_FILENAME = '/input/yoav_ST/imagenet-vgg-verydeep-19.mat'
 
 EXPECTED_BYTES = 534904783
 
