@@ -9,8 +9,8 @@ For more details, please read the assignment handout:
 https://docs.google.com/document/d/1FpueD-3mScnD0SJQDtwmOb1FrSwo1NGowkXzMwPoLH4/edit?usp=sharing
 """
 
-local_flag=1
-skyscanner = 1 - local_flag
+local_flag=0
+skywalker = 1 - local_flag
 
 import os
 
@@ -21,7 +21,7 @@ if local_flag:
     checkpoint_path = 'checkpoints'
     outputs_path = 'outputs'
 
-if skyscanner:
+if skywalker:
     input_path = '/input/yoav_ST/'
     checkpoint_path = os.environ['OUTPUT'] + '/checkpoints'
     outputs_path = os.environ['OUTPUT'] + '/outputs'

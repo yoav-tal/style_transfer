@@ -10,8 +10,8 @@ For more details, please read the assignment handout:
 """
 
 
-local_flag=1
-skyscanner = 1 - local_flag
+local_flag=0
+skywalker = 1 - local_flag
 
 import numpy as np
 import scipy.io
