@@ -315,6 +315,6 @@ class StyleTransfer(object):
 
 if __name__ == '__main__':
     setup()
-    machine = StyleTransfer(input_path + 'content/punch.jpg', input_path + 'styles/guernica.jpeg', 666,500)#333, 250)
+    machine = StyleTransfer(input_path + 'content/punch.jpg', input_path + 'styles/kadishman.jpeg', 666,500)#333, 250)
     machine.build()
     machine.train(1000)
