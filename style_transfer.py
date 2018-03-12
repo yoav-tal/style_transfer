@@ -8,12 +8,23 @@ cs20.stanford.edu
 For more details, please read the assignment handout:
 https://docs.google.com/document/d/1FpueD-3mScnD0SJQDtwmOb1FrSwo1NGowkXzMwPoLH4/edit?usp=sharing
 """
+
+local_flag=1
+skyscanner = 1 - local_flag
+
 import os
 
-#os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+if local_flag:
+    #os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
-checkpoint_path = os.environ['OUTPUT'] + '/checkpoints'
-outputs_path = os.environ['OUTPUT'] + '/outputs'
+    input_path = ''
+    checkpoint_path = 'checkpoints'
+    outputs_path = 'outputs'
+
+if skyscanner:
+    input_path = '/input/yoav_ST/'
+    checkpoint_path = os.environ['OUTPUT'] + '/checkpoints'
+    outputs_path = os.environ['OUTPUT'] + '/outputs'
 
 import time
 
@@ -25,16 +36,9 @@ import utils
 
 
 def setup():
-#    utils.safe_mkdir('checkpoints')
-#    utils.safe_mkdir('outputs')
 
     utils.safe_mkdir(checkpoint_path)
     utils.safe_mkdir(outputs_path)
-
-    try:
-        pass#os.remove('checkpoints/checkpoint')
-    except:
-        pass
 
 
 
@@ -151,8 +155,8 @@ class StyleTransfer(object):
             #M = tf.shape(a)[3]
             #N = tf.reduce_prod(tf.shape(a)[1:3])
 
-            M = a.shape[3]
-            N = a.shape[1] * a.shape[2]
+            N = a.shape[3]
+            M = a.shape[1] * a.shape[2]
 
             gram_g = self._gram_matrix(g, N, M)
             gram_a = self._gram_matrix(a, N, M)
@@ -253,7 +257,6 @@ class StyleTransfer(object):
 
             saver = tf.train.Saver()
 
-            #checkpoint_exists = tf.train.get_checkpoint_state('checkpoints')
             checkpoint_exists = tf.train.get_checkpoint_state(checkpoint_path)
             if checkpoint_exists:
                 saver.restore(sess, checkpoint_exists.model_checkpoint_path)
@@ -301,10 +304,9 @@ class StyleTransfer(object):
                         ## TO DO: save the variables into a checkpoint
                         print("Saving...")
 
-                        #filename = 'outputs/%d.png' % (index)
                         filename = outputs_path + '/%d.png' % (index)
                         utils.save_image(filename, gen_image)
-                        #saver.save(sess=sess, save_path='checkpoints/style_transfer',global_step=self.gstep)
+
                         saver.save(sess=sess, save_path= checkpoint_path + '/style_transfer',global_step=self.gstep)
 
                         ###############################
@@ -313,7 +315,6 @@ class StyleTransfer(object):
 
 if __name__ == '__main__':
     setup()
-    #machine = StyleTransfer('content/punch.jpg', 'styles/kadishman.jpeg', 160,120)#333, 250)
-    machine = StyleTransfer('/input/yoav_ST/content/punch.jpg', '/input/yoav_ST/styles/kadishman.jpeg', 200,150)#333, 250)
+    machine = StyleTransfer(input_path + 'content/punch.jpg', input_path + 'styles/miro.jpeg', 666,500)#333, 250)
     machine.build()
     machine.train(1000)
