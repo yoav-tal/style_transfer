@@ -112,10 +112,11 @@ class StyleTransfer(object):
         '''
         ###############################
         ## TO DO
-        layer_shape = tf.shape(P)
-        coeff = 4*(tf.reduce_prod(layer_shape[1:]))
-        squared_norm = tf.square(tf.norm(F-P))
-        self.content_loss = tf.divide(squared_norm, tf.cast(coeff, dtype=tf.float32))
+        #layer_shape = tf.shape(P)
+        #coeff = 4*(tf.reduce_prod(layer_shape[1:]))
+        #squared_norm = tf.square(tf.norm(F-P))
+        #self.content_loss = tf.divide(squared_norm, tf.cast(coeff, dtype=tf.float32))
+        self.content_loss = tf.reduce_sum((F-P)**2) / (4.0*P.size)
         ###############################
 
     def _gram_matrix(self, F, N, M):
@@ -147,19 +148,24 @@ class StyleTransfer(object):
         ###############################
         ## TO DO
         with tf.variable_scope('ssl',reuse=tf.AUTO_REUSE) as scope:
-            M = tf.shape(a)[3]
-            N = tf.reduce_prod(tf.shape(a)[1:3])
+            #M = tf.shape(a)[3]
+            #N = tf.reduce_prod(tf.shape(a)[1:3])
+
+            M = a.shape[3]
+            N = a.shape[1] * a.shape[2]
 
             gram_g = self._gram_matrix(g, N, M)
             gram_a = self._gram_matrix(a, N, M)
 
-            squared_norm = tf.square(tf.norm(gram_g - gram_a))
+            #squared_norm = tf.square(tf.norm(gram_g - gram_a))
 
-            M = tf.cast(M,tf.float64)
-            N = tf.cast(N, tf.float64)
-            coeff = 4*tf.square(M)*tf.square(N)
+            #M = tf.cast(M,tf.float64)
+            #N = tf.cast(N, tf.float64)
+            #coeff = 4*tf.square(M)*tf.square(N)
 
-            return tf.divide(squared_norm, tf.cast(coeff, tf.float32))
+            #return tf.divide(squared_norm, tf.cast(coeff, tf.float32))
+
+            return tf.reduce_sum((gram_g - gram_a)**2) / (4.0*((M*N)**2))
         ###############################
 
     def _style_loss(self, A):
@@ -172,7 +178,7 @@ class StyleTransfer(object):
         G = [getattr(self.vgg, self.style_layers[i]) for i in range(5)]
 
 
-        self.style_loss = tf.reduce_sum([self.style_layer_w[i]*self._single_style_loss(A[i], G[i]) for i in range(5)])
+        self.style_loss = sum([self.style_layer_w[i]*self._single_style_loss(A[i], G[i]) for i in range(5)])
         ###############################
 
     def losses(self):
@@ -192,7 +198,7 @@ class StyleTransfer(object):
             ##########################################
             ## TO DO: create total loss.
             ## Hint: don't forget the weights for the content loss and style loss
-            self.total_loss = tf.reduce_sum(tf.multiply([self.content_w, self.style_w], [self.content_loss, self.style_loss]))
+            self.total_loss = self.content_w * self.content_loss +  self.style_w * self.style_loss
             ##########################################
 
 
